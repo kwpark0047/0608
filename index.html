@@ -1,318 +1,582 @@
-import React, { useState, useEffect } from 'react';
-import { Mail, Github, BookOpen, Code, Megaphone, Terminal, User, ExternalLink, ChevronDown } from 'lucide-react';
-
-// 포트폴리오에 표시될 데이터를 한 곳에서 관리합니다.
-const portfolioData = {
-  header: {
-    name: "박강원",
-    title: "광고 기획자 • 과학 교사 • 개발자",
-    slogan: "세 가지 시선으로 세상을 연결하는 크리에이터"
-  },
-  about: {
-    description: "광고/미디어의 기획력, 과학 교사로서의 분석력, 그리고 개발자로서의 구현력을 갖추고 있습니다. '위마켓(WiMarket)'과 같은 혁신적인 프로젝트를 통해 아이디어를 현실로 만드는 것을 즐깁니다. 기술을 통해 교육과 일상의 문제를 해결하는 데 관심이 많습니다."
-  },
-  skills: [
-    { category: "Development", items: ["React", "Next.js", "JavaScript", "HTML/CSS", "Firebase", "Supabase"] },
-    { category: "Planning & Design", items: ["광고 기획", "미디어 전략", "UI/UX 설계", "Figma"] },
-    { category: "Education", items: ["과학 교육", "메이커톤 멘토링", "커리큘럼 기획"] }
-  ],
-  projects: [
-    {
-      title: "WiMarket (위마켓)",
-      role: "기획 및 개발",
-      description: "학교/지역 사회 기반의 안전한 중고 거래 플랫폼. 위치 기반 인증을 통해 신뢰성을 높이고 학생들의 경제 관념 교육에 활용.",
-      tech: ["React", "Firebase", "Tailwind CSS"],
-      link: "#"
-    },
-    {
-      title: "C251229",
-      role: "프로젝트 리드",
-      description: "메이커톤 프로젝트 성과물. 일상의 불편함을 기술로 해결하는 아이디어 구현체.",
-      tech: ["Next.js", "Supabase"],
-      link: "#"
-    },
-    {
-      title: "Edu-Tech Science Kit",
-      role: "교육 기획",
-      description: "학생들이 직접 코딩하고 조립하며 과학 원리를 배우는 교보재 기획 및 프로토타입 개발.",
-      tech: ["Arduino", "Python", "3D Printing"],
-      link: "#"
-    }
-  ]
-};
-
-const Navbar = ({ activeSection }) => {
-  const [isScrolled, setIsScrolled] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  const navLinks = [
-    { name: 'Home', href: '#home' },
-    { name: 'About', href: '#about' },
-    { name: 'Projects', href: '#projects' },
-    { name: 'Contact', href: '#contact' },
-  ];
-
-  return (
-    <nav className={`fixed w-full z-50 transition-all duration-300 ${isScrolled ? 'bg-white/90 backdrop-blur-md shadow-sm py-4' : 'bg-transparent py-6'}`}>
-      <div className="max-w-6xl mx-auto px-6 flex justify-between items-center">
-        <a href="#home" className="text-xl font-bold tracking-tighter text-slate-900">
-          KW.PARK
-        </a>
-        <div className="hidden md:flex space-x-8">
-          {navLinks.map((link) => (
-            <a
-              key={link.name}
-              href={link.href}
-              className={`text-sm font-medium transition-colors hover:text-blue-600 ${
-                activeSection === link.name.toLowerCase() ? 'text-blue-600' : 'text-slate-600'
-              }`}
-            >
-              {link.name}
-            </a>
-          ))}
-        </div>
-      </div>
-    </nav>
-  );
-};
-
-const HeroSection = () => {
-  return (
-    <section id="home" className="min-h-screen flex items-center justify-center relative bg-slate-50 pt-20">
-      {/* 장식용 배경 요소 */}
-      <div className="absolute top-1/4 left-1/4 w-72 h-72 bg-blue-400 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob"></div>
-      <div className="absolute top-1/3 right-1/4 w-72 h-72 bg-purple-400 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000"></div>
-      <div className="absolute bottom-1/4 left-1/3 w-72 h-72 bg-teal-400 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-4000"></div>
-
-      <div className="relative z-10 text-center px-6 max-w-4xl mx-auto">
-        <div className="flex justify-center mb-6 space-x-4">
-          <div className="p-3 bg-white rounded-2xl shadow-sm text-blue-600"><Megaphone size={24} /></div>
-          <div className="p-3 bg-white rounded-2xl shadow-sm text-purple-600"><BookOpen size={24} /></div>
-          <div className="p-3 bg-white rounded-2xl shadow-sm text-teal-600"><Terminal size={24} /></div>
-        </div>
-        
-        <h1 className="text-5xl md:text-7xl font-extrabold text-slate-900 tracking-tight mb-6">
-          {portfolioData.header.name}
-        </h1>
-        <h2 className="text-2xl md:text-3xl font-medium text-slate-700 mb-6">
-          {portfolioData.header.title}
-        </h2>
-        <p className="text-lg md:text-xl text-slate-500 mb-10 max-w-2xl mx-auto">
-          {portfolioData.header.slogan}
-        </p>
-        
-        <div className="flex flex-col sm:flex-row justify-center items-center space-y-4 sm:space-y-0 sm:space-x-4">
-          <a href="#projects" className="px-8 py-4 bg-slate-900 text-white rounded-full font-medium hover:bg-slate-800 transition-colors w-full sm:w-auto">
-            프로젝트 보기
-          </a>
-          <a href="#contact" className="px-8 py-4 bg-white text-slate-900 border border-slate-200 rounded-full font-medium hover:bg-slate-50 transition-colors w-full sm:w-auto">
-            연락하기
-          </a>
-        </div>
-      </div>
-
-      <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce text-slate-400">
-        <ChevronDown size={32} />
-      </div>
-    </section>
-  );
-};
-
-const AboutSection = () => {
-  return (
-    <section id="about" className="py-24 bg-white">
-      <div className="max-w-6xl mx-auto px-6">
-        <div className="flex items-center mb-12">
-          <User className="text-blue-600 mr-3" size={32} />
-          <h2 className="text-4xl font-bold text-slate-900">About Me</h2>
-        </div>
-        
-        <div className="grid md:grid-cols-2 gap-16">
-          <div>
-            <p className="text-lg text-slate-600 leading-relaxed mb-8">
-              {portfolioData.about.description}
-            </p>
-            <div className="flex space-x-4">
-              <a href="#" className="p-3 bg-slate-100 text-slate-600 rounded-full hover:bg-slate-200 hover:text-slate-900 transition-colors">
-                <Github size={24} />
-              </a>
-              <a href="#" className="p-3 bg-slate-100 text-slate-600 rounded-full hover:bg-slate-200 hover:text-slate-900 transition-colors">
-                <Mail size={24} />
-              </a>
-            </div>
-          </div>
-          
-          <div className="space-y-8">
-            {portfolioData.skills.map((skillGroup, index) => (
-              <div key={index}>
-                <h3 className="text-xl font-semibold text-slate-900 mb-4 pb-2 border-b border-slate-100">
-                  {skillGroup.category}
-                </h3>
-                <div className="flex flex-wrap gap-2">
-                  {skillGroup.items.map((skill, idx) => (
-                    <span key={idx} className="px-4 py-2 bg-slate-50 border border-slate-100 rounded-lg text-sm font-medium text-slate-700">
-                      {skill}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-};
-
-const ProjectsSection = () => {
-  return (
-    <section id="projects" className="py-24 bg-slate-50">
-      <div className="max-w-6xl mx-auto px-6">
-        <div className="flex items-center mb-16 justify-center">
-          <Code className="text-blue-600 mr-3" size={32} />
-          <h2 className="text-4xl font-bold text-slate-900 text-center">Featured Projects</h2>
-        </div>
-        
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {portfolioData.projects.map((project, index) => (
-            <div key={index} className="bg-white rounded-2xl p-8 shadow-sm hover:shadow-xl transition-shadow duration-300 border border-slate-100 group flex flex-col h-full">
-              <div className="mb-4">
-                <span className="text-xs font-bold tracking-wider text-blue-600 uppercase">
-                  {project.role}
-                </span>
-              </div>
-              <h3 className="text-2xl font-bold text-slate-900 mb-3 group-hover:text-blue-600 transition-colors">
-                {project.title}
-              </h3>
-              <p className="text-slate-600 mb-6 flex-grow">
-                {project.description}
-              </p>
-              
-              <div className="mt-auto">
-                <div className="flex flex-wrap gap-2 mb-6">
-                  {project.tech.map((tech, idx) => (
-                    <span key={idx} className="text-xs font-medium text-slate-500 bg-slate-100 px-2 py-1 rounded">
-                      {tech}
-                    </span>
-                  ))}
-                </div>
-                <a href={project.link} className="inline-flex items-center text-sm font-semibold text-slate-900 hover:text-blue-600 transition-colors">
-                  View Project <ExternalLink size={16} className="ml-1" />
-                </a>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-};
-
-const ContactSection = () => {
-  return (
-    <section id="contact" className="py-24 bg-white">
-      <div className="max-w-4xl mx-auto px-6 text-center">
-        <h2 className="text-4xl font-bold text-slate-900 mb-6">Let's Work Together</h2>
-        <p className="text-lg text-slate-600 mb-12">
-          새로운 프로젝트나 협업에 대한 아이디어가 있으신가요? <br className="hidden sm:block"/>
-          언제든 편하게 연락 주세요.
-        </p>
-        
-        <a href="mailto:hello@example.com" className="inline-flex items-center px-8 py-4 bg-blue-600 text-white rounded-full font-medium hover:bg-blue-700 transition-colors shadow-lg shadow-blue-200 text-lg">
-          <Mail className="mr-2" size={20} />
-          이메일 보내기
-        </a>
-      </div>
-    </section>
-  );
-};
-
-const Footer = () => {
-  return (
-    <footer className="bg-slate-900 text-slate-400 py-12 text-center">
-      <div className="max-w-6xl mx-auto px-6">
-        <p className="mb-4">© {new Date().getFullYear()} {portfolioData.header.name}. All rights reserved.</p>
-        <p className="text-sm text-slate-500">
-          Designed & Built with React and Tailwind CSS
-        </p>
-      </div>
-    </footer>
-  );
-};
-
-export default function App() {
-  const [activeSection, setActiveSection] = useState('home');
-
-  // 스크롤 위치에 따라 활성 섹션 감지 (간단한 구현)
-  useEffect(() => {
-    const handleScroll = () => {
-      const sections = ['home', 'about', 'projects', 'contact'];
-      let current = '';
-
-      for (let section of sections) {
-        const element = document.getElementById(section);
-        if (element) {
-          const rect = element.getBoundingClientRect();
-          if (rect.top <= 150 && rect.bottom >= 150) {
-            current = section;
-            break;
-          }
+<!DOCTYPE html>
+<html lang="ko" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>박강원 포트폴리오 | 기획자 • 과학 교사 • 개발자</title>
+    
+    <!-- Pretendard 고품질 한국어 웹폰트 적용 -->
+    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Pretendard', 'Inter', 'sans-serif'],
+                    },
+                    animation: {
+                        'blob': 'blob 10s infinite',
+                        'bounce-slow': 'bounce 3s infinite',
+                    },
+                    keyframes: {
+                        blob: {
+                            '0%': { transform: 'translate(0px, 0px) scale(1)' },
+                            '33%': { transform: 'translate(40px, -60px) scale(1.15)' },
+                            '66%': { transform: 'translate(-30px, 30px) scale(0.9)' },
+                            '100%': { transform: 'translate(0px, 0px) scale(1)' },
+                        }
+                    }
+                }
+            }
         }
-      }
-      
-      if (current && current !== activeSection) {
-        setActiveSection(current);
-      }
-    };
+    </script>
+    
+    <style>
+        .animation-delay-2000 {
+            animation-delay: 2s;
+        }
+        .animation-delay-4000 {
+            animation-delay: 4s;
+        }
+        /* 스크롤바 디자인 맞춤 */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+</head>
+<body class="bg-white text-slate-900 font-sans antialiased overflow-x-hidden">
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [activeSection]);
+    <!-- Navigation Bar -->
+    <nav id="navbar" class="fixed w-full z-50 transition-all duration-300 bg-transparent py-6">
+        <div class="max-w-6xl mx-auto px-6 flex justify-between items-center">
+            <a href="#home" class="text-xl font-bold tracking-tighter text-slate-900 hover:text-blue-600 transition-colors">
+                KW.PARK
+            </a>
+            
+            <!-- Desktop Nav Links -->
+            <div class="hidden md:flex space-x-8 items-center">
+                <a href="#home" class="nav-link text-sm font-medium text-slate-600 hover:text-blue-600 transition-colors" data-section="home">Home</a>
+                <a href="#about" class="nav-link text-sm font-medium text-slate-600 hover:text-blue-600 transition-colors" data-section="about">About</a>
+                <a href="#projects" class="nav-link text-sm font-medium text-slate-600 hover:text-blue-600 transition-colors" data-section="projects">Projects</a>
+                <a href="#wimarket-demo" class="nav-link text-sm font-medium text-slate-600 hover:text-blue-600 transition-colors" data-section="wimarket-demo">Demo</a>
+                <a href="#contact" class="nav-link text-sm font-medium text-slate-600 hover:text-blue-600 transition-colors" data-section="contact">Contact</a>
+            </div>
 
-  // CSS for background animation
-  useEffect(() => {
-    const style = document.createElement('style');
-    style.innerHTML = `
-      @keyframes blob {
-        0% { transform: translate(0px, 0px) scale(1); }
-        33% { transform: translate(30px, -50px) scale(1.1); }
-        66% { transform: translate(-20px, 20px) scale(0.9); }
-        100% { transform: translate(0px, 0px) scale(1); }
-      }
-      .animate-blob {
-        animation: blob 7s infinite;
-      }
-      .animation-delay-2000 {
-        animation-delay: 2s;
-      }
-      .animation-delay-4000 {
-        animation-delay: 4s;
-      }
-      html {
-        scroll-behavior: smooth;
-      }
-    `;
-    document.head.appendChild(style);
-    return () => document.head.removeChild(style);
-  }, []);
+            <!-- Mobile Menu Toggle -->
+            <button id="menu-btn" class="md:hidden text-slate-900 focus:outline-none" aria-label="메뉴 열기">
+                <i data-lucide="menu" class="w-6 h-6"></i>
+            </button>
+        </div>
 
-  return (
-    <div className="font-sans text-slate-900 selection:bg-blue-100 selection:text-blue-900 bg-white">
-      <Navbar activeSection={activeSection} />
-      <main>
-        <HeroSection />
-        <AboutSection />
-        <ProjectsSection />
-        <ContactSection />
-      </main>
-      <Footer />
+        <!-- Mobile Drawer Menu -->
+        <div id="mobile-menu" class="hidden md:hidden absolute top-full left-0 w-full bg-white border-b border-slate-100 shadow-lg px-6 py-4 flex flex-col space-y-4">
+            <a href="#home" class="mobile-nav-link text-base font-medium text-slate-700 py-1" onclick="toggleMenu()">Home</a>
+            <a href="#about" class="mobile-nav-link text-base font-medium text-slate-700 py-1" onclick="toggleMenu()">About</a>
+            <a href="#projects" class="mobile-nav-link text-base font-medium text-slate-700 py-1" onclick="toggleMenu()">Projects</a>
+            <a href="#wimarket-demo" class="mobile-nav-link text-base font-medium text-slate-700 py-1" onclick="toggleMenu()">Demo</a>
+            <a href="#contact" class="mobile-nav-link text-base font-medium text-slate-700 py-1" onclick="toggleMenu()">Contact</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="min-h-screen flex items-center justify-center relative bg-slate-50 pt-20">
+        <!-- Floating Animated Background Blobs -->
+        <div class="absolute top-1/4 left-1/4 w-72 h-72 bg-blue-400 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob"></div>
+        <div class="absolute top-1/3 right-1/4 w-72 h-72 bg-purple-400 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000"></div>
+        <div class="absolute bottom-1/4 left-1/3 w-72 h-72 bg-teal-400 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-4000"></div>
+
+        <div class="relative z-10 text-center px-6 max-w-4xl mx-auto">
+            <!-- Badges representing roles -->
+            <div class="flex justify-center mb-8 gap-4 flex-wrap">
+                <div class="flex items-center gap-2 px-4 py-2 bg-white rounded-2xl shadow-sm border border-slate-100 text-blue-600 font-medium text-sm">
+                    <i data-lucide="megaphone" class="w-4 h-4"></i> 광고 기획자
+                </div>
+                <div class="flex items-center gap-2 px-4 py-2 bg-white rounded-2xl shadow-sm border border-slate-100 text-purple-600 font-medium text-sm">
+                    <i data-lucide="book-open" class="w-4 h-4"></i> 과학 교사
+                </div>
+                <div class="flex items-center gap-2 px-4 py-2 bg-white rounded-2xl shadow-sm border border-slate-100 text-teal-600 font-medium text-sm">
+                    <i data-lucide="terminal" class="w-4 h-4"></i> 웹 개발자
+                </div>
+            </div>
+            
+            <h1 class="text-4xl md:text-7xl font-extrabold text-slate-900 tracking-tight mb-6">
+                박강원
+            </h1>
+            <h2 class="text-xl md:text-3xl font-medium text-slate-700 mb-6">
+                세 가지 시선으로 세상을 연결하는 크리에이터
+            </h2>
+            <p class="text-base md:text-lg text-slate-500 mb-10 max-w-2xl mx-auto leading-relaxed">
+                광고/미디어의 기획력, 과학 교사로서의 분석력, 그리고 개발자로서의 기술적 구현력을 결합하여 교육과 일상의 불편함을 해결하는 혁신적인 가치를 설계합니다.
+            </p>
+            
+            <div class="flex flex-col sm:flex-row justify-center items-center gap-4">
+                <a href="#projects" class="px-8 py-4 bg-slate-900 text-white rounded-full font-medium hover:bg-slate-800 transition-all shadow-md hover:shadow-lg w-full sm:w-auto text-center">
+                    포트폴리오 탐색
+                </a>
+                <a href="#contact" class="px-8 py-4 bg-white text-slate-900 border border-slate-200 rounded-full font-medium hover:bg-slate-50 transition-colors w-full sm:w-auto text-center">
+                    협업 및 연락하기
+                </a>
+            </div>
+        </div>
+
+        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce-slow text-slate-400">
+            <i data-lucide="chevron-down" class="w-8 h-8"></i>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-24 bg-white border-b border-slate-100">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="flex items-center mb-12">
+                <div class="p-2 bg-blue-50 text-blue-600 rounded-lg mr-3">
+                    <i data-lucide="user" class="w-8 h-8"></i>
+                </div>
+                <h2 class="text-3xl md:text-4xl font-bold text-slate-900">About Me</h2>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-16 items-start">
+                <div>
+                    <h3 class="text-2xl font-bold text-slate-900 mb-4">가치를 설계하고, 배움을 나누며, 제품으로 구현합니다.</h3>
+                    <p class="text-lg text-slate-600 leading-relaxed mb-6">
+                        아이디어를 기획하는 것에 그치지 않고, 교육적 시선으로 분석하여 사람들에게 선한 영향력을 줄 수 있는 실재하는 서비스로 직접 개발해 냅니다.
+                    </p>
+                    <p class="text-slate-600 leading-relaxed mb-8">
+                        학교 및 지역 사회를 바꿀 수 있는 안전한 중고 마켓 '위마켓(WiMarket)' 프로젝트처럼, 기술이 일상 속에 따뜻하게 녹아들 수 있는 비즈니스 및 소셜 가치 지향 모델을 고민하고 설계합니다.
+                    </p>
+                    <div class="flex gap-4">
+                        <a href="https://github.com/kwpark0047" target="_blank" class="flex items-center gap-2 px-5 py-2.5 bg-slate-100 text-slate-700 rounded-xl hover:bg-slate-200 hover:text-slate-900 transition-colors font-medium">
+                            <i data-lucide="github" class="w-5 h-5"></i> GitHub 방문
+                        </a>
+                        <a href="#contact" class="flex items-center gap-2 px-5 py-2.5 bg-blue-50 text-blue-600 rounded-xl hover:bg-blue-100 transition-colors font-medium">
+                            <i data-lucide="mail" class="w-5 h-5"></i> 이메일 문의
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="space-y-8 bg-slate-50 p-8 rounded-2xl border border-slate-100">
+                    <div>
+                        <h3 class="text-lg font-bold text-slate-900 mb-4 flex items-center gap-2">
+                            <i data-lucide="code-2" class="w-5 h-5 text-blue-600"></i> Development Skills
+                        </h3>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-3.5 py-1.5 bg-white border border-slate-200 rounded-lg text-sm font-medium text-slate-700">React</span>
+                            <span class="px-3.5 py-1.5 bg-white border border-slate-200 rounded-lg text-sm font-medium text-slate-700">Next.js</span>
+                            <span class="px-3.5 py-1.5 bg-white border border-slate-200 rounded-lg text-sm font-medium text-slate-700">JavaScript</span>
+                            <span class="px-3.5 py-1.5 bg-white border border-slate-200 rounded-lg text-sm font-medium text-slate-700">HTML / CSS</span>
+                            <span class="px-3.5 py-1.5 bg-white border border-slate-200 rounded-lg text-sm font-medium text-slate-700">Tailwind CSS</span>
+                            <span class="px-3.5 py-1.5 bg-white border border-slate-200 rounded-lg text-sm font-medium text-slate-700">Firebase</span>
+                            <span class="px-3.5 py-1.5 bg-white border border-slate-200 rounded-lg text-sm font-medium text-slate-700">Supabase</span>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h3 class="text-lg font-bold text-slate-900 mb-4 flex items-center gap-2">
+                            <i data-lucide="lightbulb" class="w-5 h-5 text-purple-600"></i> Planning & Strategy
+                        </h3>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-3.5 py-1.5 bg-white border border-slate-200 rounded-lg text-sm font-medium text-slate-700">광고 크리에이티브 기획</span>
+                            <span class="px-3.5 py-1.5 bg-white border border-slate-200 rounded-lg text-sm font-medium text-slate-700">미디어 마케팅 전략</span>
+                            <span class="px-3.5 py-1.5 bg-white border border-slate-200 rounded-lg text-sm font-medium text-slate-700">UI/UX 와이어프레임 설계</span>
+                            <span class="px-3.5 py-1.5 bg-white border border-slate-200 rounded-lg text-sm font-medium text-slate-700">Figma 프로토타이핑</span>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 class="text-lg font-bold text-slate-900 mb-4 flex items-center gap-2">
+                            <i data-lucide="graduation-cap" class="w-5 h-5 text-teal-600"></i> Education & Mentoring
+                        </h3>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-3.5 py-1.5 bg-white border border-slate-200 rounded-lg text-sm font-medium text-slate-700">과학 교육 커리큘럼 개발</span>
+                            <span class="px-3.5 py-1.5 bg-white border border-slate-200 rounded-lg text-sm font-medium text-slate-700">메이커톤 기술 멘토링</span>
+                            <span class="px-3.5 py-1.5 bg-white border border-slate-200 rounded-lg text-sm font-medium text-slate-700">아두이노 피지컬 컴퓨팅</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="py-24 bg-slate-50">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="text-center max-w-2xl mx-auto mb-16">
+                <div class="inline-flex items-center gap-2 px-3 py-1 bg-blue-50 text-blue-600 rounded-full font-semibold text-xs uppercase tracking-wider mb-3">
+                    Portfolio
+                </div>
+                <h2 class="text-3xl md:text-4xl font-bold text-slate-900 mb-4">Featured Projects</h2>
+                <p class="text-slate-600">
+                    기획, 교육, 기술적 지향점을 모두 담아 제작한 세 가지 주요 프로젝트 성과물입니다.
+                </p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Project Card 1: WiMarket -->
+                <div class="bg-white rounded-2xl p-8 shadow-sm hover:shadow-xl transition-all duration-300 border border-slate-100 group flex flex-col h-full hover:-translate-y-1">
+                    <div class="flex justify-between items-start mb-4">
+                        <span class="text-xs font-bold tracking-wider text-blue-600 uppercase bg-blue-50 px-2.5 py-1 rounded">
+                            기획 및 개발 Lead
+                        </span>
+                        <div class="text-slate-300 group-hover:text-blue-500 transition-colors">
+                            <i data-lucide="star" class="w-5 h-5 fill-current"></i>
+                        </div>
+                    </div>
+                    <h3 class="text-2xl font-bold text-slate-900 mb-3 group-hover:text-blue-600 transition-colors">
+                        WiMarket (위마켓)
+                    </h3>
+                    <p class="text-slate-600 mb-6 flex-grow leading-relaxed">
+                        학교 및 지역공동체 기반의 안전하고 투명한 중고 마켓 플레이스. 사기 유포 방지, 안전 장터 존 형성, 그리고 교육적인 화폐 소통 방안에 기여하도록 빌딩했습니다.
+                    </p>
+                    <div class="mt-auto">
+                        <div class="flex flex-wrap gap-2 mb-6">
+                            <span class="text-xs font-medium text-slate-500 bg-slate-100 px-2.5 py-1 rounded">React</span>
+                            <span class="text-xs font-medium text-slate-500 bg-slate-100 px-2.5 py-1 rounded">Firebase Db</span>
+                            <span class="text-xs font-medium text-slate-500 bg-slate-100 px-2.5 py-1 rounded">TailwindCSS</span>
+                        </div>
+                        <a href="#wimarket-demo" class="inline-flex items-center text-sm font-bold text-slate-900 hover:text-blue-600 transition-colors group/link">
+                            미니 데모 구동하기 <i data-lucide="arrow-right" class="w-4 h-4 ml-1 transform group-hover/link:translate-x-1 transition-transform"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Project Card 2: C251229 -->
+                <div class="bg-white rounded-2xl p-8 shadow-sm hover:shadow-xl transition-all duration-300 border border-slate-100 group flex flex-col h-full hover:-translate-y-1">
+                    <div class="flex justify-between items-start mb-4">
+                        <span class="text-xs font-bold tracking-wider text-purple-600 uppercase bg-purple-50 px-2.5 py-1 rounded">
+                            메이커톤 최우수작
+                        </span>
+                        <div class="text-slate-300 group-hover:text-purple-500 transition-colors">
+                            <i data-lucide="award" class="w-5 h-5"></i>
+                        </div>
+                    </div>
+                    <h3 class="text-2xl font-bold text-slate-900 mb-3 group-hover:text-purple-600 transition-colors">
+                        C251229 (메이커톤)
+                    </h3>
+                    <p class="text-slate-600 mb-6 flex-grow leading-relaxed">
+                        일생 동안 인지하기 힘든 소외 구역이나 공공 안전 위협 요소를 수치화하고 알림을 주는 모니터링 허브 플랫폼. 신속한 인터페이스 반응 속도를 구현했습니다.
+                    </p>
+                    <div class="mt-auto">
+                        <div class="flex flex-wrap gap-2 mb-6">
+                            <span class="text-xs font-medium text-slate-500 bg-slate-100 px-2.5 py-1 rounded">Next.js</span>
+                            <span class="text-xs font-medium text-slate-500 bg-slate-100 px-2.5 py-1 rounded">Supabase Realtime</span>
+                        </div>
+                        <a href="https://github.com/kwpark0047" target="_blank" class="inline-flex items-center text-sm font-bold text-slate-900 hover:text-purple-600 transition-colors group/link">
+                            리포지토리 살펴보기 <i data-lucide="external-link" class="w-4 h-4 ml-1"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Project Card 3: Edu-Tech Science Kit -->
+                <div class="bg-white rounded-2xl p-8 shadow-sm hover:shadow-xl transition-all duration-300 border border-slate-100 group flex flex-col h-full hover:-translate-y-1">
+                    <div class="flex justify-between items-start mb-4">
+                        <span class="text-xs font-bold tracking-wider text-teal-600 uppercase bg-teal-50 px-2.5 py-1 rounded">
+                            에듀테크 실무 응용
+                        </span>
+                        <div class="text-slate-300 group-hover:text-teal-500 transition-colors">
+                            <i data-lucide="wrench" class="w-5 h-5"></i>
+                        </div>
+                    </div>
+                    <h3 class="text-2xl font-bold text-slate-900 mb-3 group-hover:text-teal-600 transition-colors">
+                        Edu-Tech Science Kit
+                    </h3>
+                    <p class="text-slate-600 mb-6 flex-grow leading-relaxed">
+                        학생들이 코딩 및 센서 계측 원리를 직접 손으로 학습할 수 있도록 설계된 DIY 키트와 시각화 대시보드 소프트웨어 연동 패키지입니다.
+                    </p>
+                    <div class="mt-auto">
+                        <div class="flex flex-wrap gap-2 mb-6">
+                            <span class="text-xs font-medium text-slate-500 bg-slate-100 px-2.5 py-1 rounded">Arduino Core</span>
+                            <span class="text-xs font-medium text-slate-500 bg-slate-100 px-2.5 py-1 rounded">Python Qt</span>
+                            <span class="text-xs font-medium text-slate-500 bg-slate-100 px-2.5 py-1 rounded">3D Modeling</span>
+                        </div>
+                        <span class="inline-flex items-center text-sm font-semibold text-slate-400 cursor-not-allowed">
+                            배포 준비 중 <i data-lucide="lock" class="w-4 h-4 ml-1"></i>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- WiMarket Mini-Demo Section -->
+    <section id="wimarket-demo" class="py-24 bg-white">
+        <div class="max-w-4xl mx-auto px-6">
+            <div class="text-center mb-12">
+                <span class="text-xs font-bold text-blue-600 uppercase tracking-widest bg-blue-50 px-3 py-1 rounded-full">Interactive Demo</span>
+                <h2 class="text-3xl font-bold text-slate-900 mt-3 mb-4">WiMarket 모의 작동 체험관</h2>
+                <p class="text-slate-600">위마켓의 직관적인 사용자 플로우를 아래 시뮬레이터에서 즉시 테스트해 볼 수 있습니다.</p>
+            </div>
+
+            <!-- Simulator Widget Container -->
+            <div class="bg-slate-900 rounded-3xl p-6 md:p-10 text-white shadow-xl max-w-2xl mx-auto">
+                <div class="flex items-center justify-between border-b border-slate-800 pb-4 mb-6">
+                    <div class="flex items-center gap-2">
+                        <span class="w-3 h-3 rounded-full bg-red-500"></span>
+                        <span class="w-3 h-3 rounded-full bg-yellow-500"></span>
+                        <span class="w-3 h-3 rounded-full bg-green-500"></span>
+                    </div>
+                    <span class="text-xs font-mono text-slate-400">WiMarket Virtual Client App v1.2</span>
+                </div>
+
+                <!-- Simulation Content Box -->
+                <div class="bg-slate-800 rounded-2xl p-6 min-h-[300px] flex flex-col justify-between">
+                    <div id="demo-content-step">
+                        <!-- Step 1 Content by default -->
+                        <div class="animate-fade-in">
+                            <h3 class="text-lg font-bold text-white flex items-center gap-2 mb-3">
+                                <i data-lucide="shield-check" class="text-blue-400"></i> 안전 학생 거래인증
+                            </h3>
+                            <p class="text-sm text-slate-300 mb-6 leading-relaxed">
+                                위마켓은 안전한 거래 공동체를 위해 학교 이메일 및 로컬 학생증 번호를 통한 안전 등급 가입 프로토콜을 사용합니다. 아래 '학생 회원가입' 버튼을 눌러보세요.
+                            </p>
+                            <div class="p-4 bg-slate-900/50 border border-slate-700/50 rounded-xl space-y-2 mb-6">
+                                <div class="text-xs text-slate-400">인증 도메인 제안</div>
+                                <div class="text-sm font-mono text-slate-200">s25****@school.or.kr</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step Indicators & Controls -->
+                    <div class="flex flex-col sm:flex-row items-center justify-between gap-4 pt-6 border-t border-slate-700/50">
+                        <div class="flex gap-1.5" id="step-dots">
+                            <span class="w-2.5 h-2.5 rounded-full bg-blue-500 transition-colors"></span>
+                            <span class="w-2.5 h-2.5 rounded-full bg-slate-600 transition-colors"></span>
+                            <span class="w-2.5 h-2.5 rounded-full bg-slate-600 transition-colors"></span>
+                        </div>
+                        <button id="demo-action-btn" class="px-6 py-2.5 bg-blue-600 hover:bg-blue-500 transition-all text-white font-medium text-sm rounded-xl flex items-center gap-2 shadow-lg shadow-blue-900/20">
+                            학생 가입 진행 <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-24 bg-slate-50 border-t border-slate-100">
+        <div class="max-w-4xl mx-auto px-6 text-center">
+            <div class="inline-flex items-center gap-2 px-3 py-1 bg-teal-50 text-teal-600 rounded-full font-semibold text-xs tracking-wider mb-4">
+                Get In Touch
+            </div>
+            <h2 class="text-3xl md:text-4xl font-bold text-slate-900 mb-6">프로젝트 제안 또는 협업 제안</h2>
+            <p class="text-lg text-slate-600 mb-12 max-w-xl mx-auto leading-relaxed">
+                교육, 브랜딩 광고 캠페인 기획, 혹은 혁신적인 웹 솔루션 구축에 대해 소통하고 싶으시다면 편안히 메일을 보내주세요!
+            </p>
+            
+            <div class="flex flex-col items-center justify-center gap-4">
+                <a href="mailto:kwpark0047@gmail.com" class="inline-flex items-center gap-3 px-8 py-4 bg-blue-600 text-white rounded-full font-bold text-lg hover:bg-blue-700 transition-colors shadow-lg shadow-blue-200">
+                    <i data-lucide="mail" class="w-5 h-5"></i> kwpark0047@gmail.com
+                </a>
+                <p class="text-xs text-slate-400 mt-2">이메일을 클릭하면 즉시 메일 앱이 연결됩니다.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Toast Notification (Alert 대체용) -->
+    <div id="toast-notif" class="fixed bottom-6 right-6 z-50 bg-slate-900 text-white px-6 py-3.5 rounded-2xl shadow-xl border border-slate-800 flex items-center gap-3 transform translate-y-24 opacity-0 transition-all duration-300">
+        <span class="p-1 bg-green-500/20 text-green-400 rounded-full">
+            <i data-lucide="check" class="w-4 h-4"></i>
+        </span>
+        <span id="toast-message" class="text-sm font-medium">알림 내용이 노출됩니다.</span>
     </div>
-  );
-}
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-400 py-12 text-center border-t border-slate-800">
+        <div class="max-w-6xl mx-auto px-6">
+            <p class="mb-4 text-slate-300 font-medium">세상의 경계를 좁히는 융합가, 박강원</p>
+            <p class="text-sm text-slate-500">© <span id="current-year"></span> Park Kang Won. Designed & Built with Single File HTML (Tailwind CSS & Lucide)</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript Section -->
+    <script>
+        // 로드 즉시 아이콘 바인딩 실시
+        document.addEventListener("DOMContentLoaded", () => {
+            lucide.createIcons();
+            document.getElementById('current-year').textContent = new Date().getFullYear();
+        });
+
+        // 1. Mobile Menu Toggle
+        const menuBtn = document.getElementById('menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        menuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        function toggleMenu() {
+            mobileMenu.classList.add('hidden');
+        }
+
+        // 2. Sticky Navbar scroll behavior
+        window.addEventListener('scroll', () => {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('bg-white/95', 'backdrop-blur-md', 'shadow-sm', 'py-4');
+                navbar.classList.remove('bg-transparent', 'py-6');
+            } else {
+                navbar.classList.remove('bg-white/95', 'backdrop-blur-md', 'shadow-sm', 'py-4');
+                navbar.classList.add('bg-transparent', 'py-6');
+            }
+        });
+
+        // 3. Active Section Link Highlighter on Scroll
+        const sections = document.querySelectorAll('section');
+        const navLinks = document.querySelectorAll('.nav-link');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (window.pageYOffset >= (sectionTop - 200)) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('text-blue-600', 'font-bold');
+                link.classList.add('text-slate-600');
+                if (link.getAttribute('data-section') === current) {
+                    link.classList.add('text-blue-600', 'font-bold');
+                    link.classList.remove('text-slate-600');
+                }
+            });
+        });
+
+        // 4. Custom Toast Notification
+        function showToast(message) {
+            const toast = document.getElementById('toast-notif');
+            const toastMsg = document.getElementById('toast-message');
+            toastMsg.textContent = message;
+
+            // Show toast
+            toast.classList.remove('translate-y-24', 'opacity-0');
+            toast.classList.add('translate-y-0', 'opacity-100');
+
+            // Hide after 3.5 seconds
+            setTimeout(() => {
+                toast.classList.add('translate-y-24', 'opacity-0');
+                toast.classList.remove('translate-y-0', 'opacity-100');
+            }, 3500);
+        }
+
+        // 5. WiMarket Mini-Demo Multi-step Interaction
+        let currentStep = 1;
+        const demoContent = document.getElementById('demo-content-step');
+        const demoBtn = document.getElementById('demo-action-btn');
+        const stepDots = document.getElementById('step-dots').children;
+
+        const demoSteps = {
+            1: {
+                html: `
+                    <div class="animate-fade-in">
+                        <h3 class="text-lg font-bold text-white flex items-center gap-2 mb-3">
+                            <i data-lucide="shield-check" class="text-blue-400"></i> 안전 학생 거래인증
+                        </h3>
+                        <p class="text-sm text-slate-300 mb-6 leading-relaxed">
+                            위마켓은 안전한 거래 공동체를 위해 학교 이메일 및 로컬 학생증 번호를 통한 안전 등급 가입 프로토콜을 사용합니다. 아래 '학생 회원가입' 버튼을 눌러보세요.
+                        </p>
+                        <div class="p-4 bg-slate-900/50 border border-slate-700/50 rounded-xl space-y-2 mb-6">
+                            <div class="text-xs text-slate-400">인증 도메인 제안</div>
+                            <div class="text-sm font-mono text-slate-200">s25****@school.or.kr</div>
+                        </div>
+                    </div>
+                `,
+                btnText: "학생 가입 진행",
+                icon: "arrow-right"
+            },
+            2: {
+                html: `
+                    <div class="animate-fade-in">
+                        <h3 class="text-lg font-bold text-white flex items-center gap-2 mb-3">
+                            <i data-lucide="shopping-bag" class="text-blue-400"></i> 검증된 전공서적 및 교재 마켓
+                        </h3>
+                        <p class="text-sm text-slate-300 mb-6 leading-relaxed">
+                            교사로 재직하면서 쌓인 인사이트를 바탕으로, 과외 및 진로 도서의 접근 기회가 적은 학생을 위한 가치 환원 장터 시스템을 렌더링합니다.
+                        </p>
+                        <div class="grid grid-cols-2 gap-3 mb-6">
+                            <div class="p-3 bg-slate-900/40 rounded-xl border border-slate-700/40">
+                                <div class="text-[11px] text-green-400 font-bold mb-1">● 판매중</div>
+                                <div class="text-xs font-bold truncate">물리 실험 키트 세트</div>
+                                <div class="text-xs text-slate-400">5,000원</div>
+                            </div>
+                            <div class="p-3 bg-slate-900/40 rounded-xl border border-slate-700/40">
+                                <div class="text-[11px] text-orange-400 font-bold mb-1">● 예약중</div>
+                                <div class="text-xs font-bold truncate">C언어 입문 도서</div>
+                                <div class="text-xs text-slate-400">무료 나눔</div>
+                            </div>
+                        </div>
+                    </div>
+                `,
+                btnText: "가상 물품 예약하기",
+                icon: "tag"
+            },
+            3: {
+                html: `
+                    <div class="animate-fade-in text-center py-6">
+                        <div class="inline-flex items-center justify-center w-16 h-16 bg-green-500/10 text-green-400 rounded-full mb-4">
+                            <i data-lucide="badge-check" class="w-10 h-10"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2">테스트 예약이 완료되었습니다!</h3>
+                        <p class="text-sm text-slate-300 max-w-md mx-auto leading-relaxed">
+                            위마켓의 핵심 기능 시뮬레이션입니다. 이와 같이 사용자들이 직접 유익한 에듀 리소스를 순환할 수 있는 플랫폼을 지향합니다.
+                        </p>
+                    </div>
+                `,
+                btnText: "첫 단계로 돌아가기",
+                icon: "rotate-ccw"
+            }
+        };
+
+        demoBtn.addEventListener('click', () => {
+            if (currentStep === 1) {
+                currentStep = 2;
+                showToast("학생 회원으로 위마켓 접속 인증에 성공했습니다.");
+            } else if (currentStep === 2) {
+                currentStep = 3;
+                showToast("선택한 장비가 임시 거래 예약 상태로 전환되었습니다.");
+            } else {
+                currentStep = 1;
+                showToast("데모가 초기화되었습니다.");
+            }
+            updateDemoUI();
+        });
+
+        function updateDemoUI() {
+            // Update Html
+            demoContent.innerHTML = demoSteps[currentStep].html;
+            
+            // Update button text & icon
+            demoBtn.innerHTML = `${demoSteps[currentStep].btnText} <i data-lucide="${demoSteps[currentStep].icon}" class="w-4 h-4"></i>`;
+            
+            // Re-render Lucide icons for dynamically added HTML
+            lucide.createIcons();
+
+            // Update Steps Indicators Dots
+            for (let i = 0; i < stepDots.length; i++) {
+                if (i === currentStep - 1) {
+                    stepDots[i].className = "w-2.5 h-2.5 rounded-full bg-blue-500 transition-colors";
+                } else {
+                    stepDots[i].className = "w-2.5 h-2.5 rounded-full bg-slate-600 transition-colors";
+                }
+            }
+        }
+    </script>
+</body>
+</html>

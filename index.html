@@ -1,53 +1,318 @@
-<!doctype html>
-<html lang="ko">
+import React, { useState, useEffect } from 'react';
+import { Mail, Github, BookOpen, Code, Megaphone, Terminal, User, ExternalLink, ChevronDown } from 'lucide-react';
 
-<head>
-  <meta charset="UTF-8" />
-  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>위마켓 - QR 메뉴판 플랫폼</title>
-
-  <!-- PWA Meta Tags -->
-  <meta name="description" content="QR코드로 간편하게 주문하고 포인트도 적립하세요" />
-  <meta name="theme-color" content="#4F46E5" />
-  <meta name="mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <meta name="apple-mobile-web-app-title" content="위마켓" />
-
-  <!-- PWA Manifest -->
-  <link rel="manifest" href="/manifest.json" />
-
-  <!-- Apple Touch Icons -->
-  <link rel="apple-touch-icon" href="/icons/icon-152x152.png" />
-  <link rel="apple-touch-icon" sizes="180x180" href="/icons/icon-192x192.png" />
-
-  <!-- Splash Screens for iOS -->
-  <meta name="apple-mobile-web-app-title" content="위마켓">
-
-  <!-- Kakao Maps SDK -->
-  <script type="text/javascript"
-    src="//dapi.kakao.com/v2/maps/sdk.js?appkey=69efa87511d9415c33bc430b602834e4&libraries=services,clusterer"></script>
-  <script type="module" crossorigin src="/assets/index-y1uQpQOu.js"></script>
-  <link rel="stylesheet" crossorigin href="/assets/index-BpxoQGzv.css">
-</head>
-
-<body>
-  <div id="root"></div>
-
-  <!-- Service Worker Registration -->
-  <script>
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', async () => {
-        try {
-          const registration = await navigator.serviceWorker.register('/sw.js');
-          console.log('[App] Service Worker registered:', registration.scope);
-        } catch (error) {
-          console.error('[App] Service Worker registration failed:', error);
-        }
-      });
+// 포트폴리오에 표시될 데이터를 한 곳에서 관리합니다.
+const portfolioData = {
+  header: {
+    name: "박강원",
+    title: "광고 기획자 • 과학 교사 • 개발자",
+    slogan: "세 가지 시선으로 세상을 연결하는 크리에이터"
+  },
+  about: {
+    description: "광고/미디어의 기획력, 과학 교사로서의 분석력, 그리고 개발자로서의 구현력을 갖추고 있습니다. '위마켓(WiMarket)'과 같은 혁신적인 프로젝트를 통해 아이디어를 현실로 만드는 것을 즐깁니다. 기술을 통해 교육과 일상의 문제를 해결하는 데 관심이 많습니다."
+  },
+  skills: [
+    { category: "Development", items: ["React", "Next.js", "JavaScript", "HTML/CSS", "Firebase", "Supabase"] },
+    { category: "Planning & Design", items: ["광고 기획", "미디어 전략", "UI/UX 설계", "Figma"] },
+    { category: "Education", items: ["과학 교육", "메이커톤 멘토링", "커리큘럼 기획"] }
+  ],
+  projects: [
+    {
+      title: "WiMarket (위마켓)",
+      role: "기획 및 개발",
+      description: "학교/지역 사회 기반의 안전한 중고 거래 플랫폼. 위치 기반 인증을 통해 신뢰성을 높이고 학생들의 경제 관념 교육에 활용.",
+      tech: ["React", "Firebase", "Tailwind CSS"],
+      link: "#"
+    },
+    {
+      title: "C251229",
+      role: "프로젝트 리드",
+      description: "메이커톤 프로젝트 성과물. 일상의 불편함을 기술로 해결하는 아이디어 구현체.",
+      tech: ["Next.js", "Supabase"],
+      link: "#"
+    },
+    {
+      title: "Edu-Tech Science Kit",
+      role: "교육 기획",
+      description: "학생들이 직접 코딩하고 조립하며 과학 원리를 배우는 교보재 기획 및 프로토타입 개발.",
+      tech: ["Arduino", "Python", "3D Printing"],
+      link: "#"
     }
-  </script>
-</body>
+  ]
+};
 
-</html>
+const Navbar = ({ activeSection }) => {
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const navLinks = [
+    { name: 'Home', href: '#home' },
+    { name: 'About', href: '#about' },
+    { name: 'Projects', href: '#projects' },
+    { name: 'Contact', href: '#contact' },
+  ];
+
+  return (
+    <nav className={`fixed w-full z-50 transition-all duration-300 ${isScrolled ? 'bg-white/90 backdrop-blur-md shadow-sm py-4' : 'bg-transparent py-6'}`}>
+      <div className="max-w-6xl mx-auto px-6 flex justify-between items-center">
+        <a href="#home" className="text-xl font-bold tracking-tighter text-slate-900">
+          KW.PARK
+        </a>
+        <div className="hidden md:flex space-x-8">
+          {navLinks.map((link) => (
+            <a
+              key={link.name}
+              href={link.href}
+              className={`text-sm font-medium transition-colors hover:text-blue-600 ${
+                activeSection === link.name.toLowerCase() ? 'text-blue-600' : 'text-slate-600'
+              }`}
+            >
+              {link.name}
+            </a>
+          ))}
+        </div>
+      </div>
+    </nav>
+  );
+};
+
+const HeroSection = () => {
+  return (
+    <section id="home" className="min-h-screen flex items-center justify-center relative bg-slate-50 pt-20">
+      {/* 장식용 배경 요소 */}
+      <div className="absolute top-1/4 left-1/4 w-72 h-72 bg-blue-400 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob"></div>
+      <div className="absolute top-1/3 right-1/4 w-72 h-72 bg-purple-400 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000"></div>
+      <div className="absolute bottom-1/4 left-1/3 w-72 h-72 bg-teal-400 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-4000"></div>
+
+      <div className="relative z-10 text-center px-6 max-w-4xl mx-auto">
+        <div className="flex justify-center mb-6 space-x-4">
+          <div className="p-3 bg-white rounded-2xl shadow-sm text-blue-600"><Megaphone size={24} /></div>
+          <div className="p-3 bg-white rounded-2xl shadow-sm text-purple-600"><BookOpen size={24} /></div>
+          <div className="p-3 bg-white rounded-2xl shadow-sm text-teal-600"><Terminal size={24} /></div>
+        </div>
+        
+        <h1 className="text-5xl md:text-7xl font-extrabold text-slate-900 tracking-tight mb-6">
+          {portfolioData.header.name}
+        </h1>
+        <h2 className="text-2xl md:text-3xl font-medium text-slate-700 mb-6">
+          {portfolioData.header.title}
+        </h2>
+        <p className="text-lg md:text-xl text-slate-500 mb-10 max-w-2xl mx-auto">
+          {portfolioData.header.slogan}
+        </p>
+        
+        <div className="flex flex-col sm:flex-row justify-center items-center space-y-4 sm:space-y-0 sm:space-x-4">
+          <a href="#projects" className="px-8 py-4 bg-slate-900 text-white rounded-full font-medium hover:bg-slate-800 transition-colors w-full sm:w-auto">
+            프로젝트 보기
+          </a>
+          <a href="#contact" className="px-8 py-4 bg-white text-slate-900 border border-slate-200 rounded-full font-medium hover:bg-slate-50 transition-colors w-full sm:w-auto">
+            연락하기
+          </a>
+        </div>
+      </div>
+
+      <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce text-slate-400">
+        <ChevronDown size={32} />
+      </div>
+    </section>
+  );
+};
+
+const AboutSection = () => {
+  return (
+    <section id="about" className="py-24 bg-white">
+      <div className="max-w-6xl mx-auto px-6">
+        <div className="flex items-center mb-12">
+          <User className="text-blue-600 mr-3" size={32} />
+          <h2 className="text-4xl font-bold text-slate-900">About Me</h2>
+        </div>
+        
+        <div className="grid md:grid-cols-2 gap-16">
+          <div>
+            <p className="text-lg text-slate-600 leading-relaxed mb-8">
+              {portfolioData.about.description}
+            </p>
+            <div className="flex space-x-4">
+              <a href="#" className="p-3 bg-slate-100 text-slate-600 rounded-full hover:bg-slate-200 hover:text-slate-900 transition-colors">
+                <Github size={24} />
+              </a>
+              <a href="#" className="p-3 bg-slate-100 text-slate-600 rounded-full hover:bg-slate-200 hover:text-slate-900 transition-colors">
+                <Mail size={24} />
+              </a>
+            </div>
+          </div>
+          
+          <div className="space-y-8">
+            {portfolioData.skills.map((skillGroup, index) => (
+              <div key={index}>
+                <h3 className="text-xl font-semibold text-slate-900 mb-4 pb-2 border-b border-slate-100">
+                  {skillGroup.category}
+                </h3>
+                <div className="flex flex-wrap gap-2">
+                  {skillGroup.items.map((skill, idx) => (
+                    <span key={idx} className="px-4 py-2 bg-slate-50 border border-slate-100 rounded-lg text-sm font-medium text-slate-700">
+                      {skill}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+const ProjectsSection = () => {
+  return (
+    <section id="projects" className="py-24 bg-slate-50">
+      <div className="max-w-6xl mx-auto px-6">
+        <div className="flex items-center mb-16 justify-center">
+          <Code className="text-blue-600 mr-3" size={32} />
+          <h2 className="text-4xl font-bold text-slate-900 text-center">Featured Projects</h2>
+        </div>
+        
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {portfolioData.projects.map((project, index) => (
+            <div key={index} className="bg-white rounded-2xl p-8 shadow-sm hover:shadow-xl transition-shadow duration-300 border border-slate-100 group flex flex-col h-full">
+              <div className="mb-4">
+                <span className="text-xs font-bold tracking-wider text-blue-600 uppercase">
+                  {project.role}
+                </span>
+              </div>
+              <h3 className="text-2xl font-bold text-slate-900 mb-3 group-hover:text-blue-600 transition-colors">
+                {project.title}
+              </h3>
+              <p className="text-slate-600 mb-6 flex-grow">
+                {project.description}
+              </p>
+              
+              <div className="mt-auto">
+                <div className="flex flex-wrap gap-2 mb-6">
+                  {project.tech.map((tech, idx) => (
+                    <span key={idx} className="text-xs font-medium text-slate-500 bg-slate-100 px-2 py-1 rounded">
+                      {tech}
+                    </span>
+                  ))}
+                </div>
+                <a href={project.link} className="inline-flex items-center text-sm font-semibold text-slate-900 hover:text-blue-600 transition-colors">
+                  View Project <ExternalLink size={16} className="ml-1" />
+                </a>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
+
+const ContactSection = () => {
+  return (
+    <section id="contact" className="py-24 bg-white">
+      <div className="max-w-4xl mx-auto px-6 text-center">
+        <h2 className="text-4xl font-bold text-slate-900 mb-6">Let's Work Together</h2>
+        <p className="text-lg text-slate-600 mb-12">
+          새로운 프로젝트나 협업에 대한 아이디어가 있으신가요? <br className="hidden sm:block"/>
+          언제든 편하게 연락 주세요.
+        </p>
+        
+        <a href="mailto:hello@example.com" className="inline-flex items-center px-8 py-4 bg-blue-600 text-white rounded-full font-medium hover:bg-blue-700 transition-colors shadow-lg shadow-blue-200 text-lg">
+          <Mail className="mr-2" size={20} />
+          이메일 보내기
+        </a>
+      </div>
+    </section>
+  );
+};
+
+const Footer = () => {
+  return (
+    <footer className="bg-slate-900 text-slate-400 py-12 text-center">
+      <div className="max-w-6xl mx-auto px-6">
+        <p className="mb-4">© {new Date().getFullYear()} {portfolioData.header.name}. All rights reserved.</p>
+        <p className="text-sm text-slate-500">
+          Designed & Built with React and Tailwind CSS
+        </p>
+      </div>
+    </footer>
+  );
+};
+
+export default function App() {
+  const [activeSection, setActiveSection] = useState('home');
+
+  // 스크롤 위치에 따라 활성 섹션 감지 (간단한 구현)
+  useEffect(() => {
+    const handleScroll = () => {
+      const sections = ['home', 'about', 'projects', 'contact'];
+      let current = '';
+
+      for (let section of sections) {
+        const element = document.getElementById(section);
+        if (element) {
+          const rect = element.getBoundingClientRect();
+          if (rect.top <= 150 && rect.bottom >= 150) {
+            current = section;
+            break;
+          }
+        }
+      }
+      
+      if (current && current !== activeSection) {
+        setActiveSection(current);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [activeSection]);
+
+  // CSS for background animation
+  useEffect(() => {
+    const style = document.createElement('style');
+    style.innerHTML = `
+      @keyframes blob {
+        0% { transform: translate(0px, 0px) scale(1); }
+        33% { transform: translate(30px, -50px) scale(1.1); }
+        66% { transform: translate(-20px, 20px) scale(0.9); }
+        100% { transform: translate(0px, 0px) scale(1); }
+      }
+      .animate-blob {
+        animation: blob 7s infinite;
+      }
+      .animation-delay-2000 {
+        animation-delay: 2s;
+      }
+      .animation-delay-4000 {
+        animation-delay: 4s;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+    `;
+    document.head.appendChild(style);
+    return () => document.head.removeChild(style);
+  }, []);
+
+  return (
+    <div className="font-sans text-slate-900 selection:bg-blue-100 selection:text-blue-900 bg-white">
+      <Navbar activeSection={activeSection} />
+      <main>
+        <HeroSection />
+        <AboutSection />
+        <ProjectsSection />
+        <ContactSection />
+      </main>
+      <Footer />
+    </div>
+  );
+}
